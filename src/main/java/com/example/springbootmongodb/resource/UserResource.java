@@ -2,6 +2,7 @@ package com.example.springbootmongodb.resource;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springbootmongodb.domain.User;
+import com.example.springbootmongodb.dto.UserDTO;
 import com.example.springbootmongodb.services.UserService;
 
 @RestController
@@ -20,9 +22,10 @@ public class UserResource {
 	private UserService service;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<User>> findAll() {
+	public ResponseEntity<List<UserDTO>> findAll() {
 		List<User> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList()); // Método utilizando expressão lambda para converter list em listDTO //
+		return ResponseEntity.ok().body(listDto);
 	}
 
 
