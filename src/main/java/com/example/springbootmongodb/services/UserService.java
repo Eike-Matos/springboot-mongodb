@@ -1,12 +1,14 @@
 package com.example.springbootmongodb.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.springbootmongodb.domain.User;
 import com.example.springbootmongodb.repository.UserRepository;
+import com.example.springbootmongodb.services.exception.ObjectNotFoundException;
 
 @Service
 public class UserService {
@@ -16,6 +18,12 @@ public class UserService {
 	
 	public List<User> findAll() {
 		return repo.findAll(); // findAll para retornar os usuários do banco de dados //
+		
+	}
+	
+	public User findById(String id) {
+		Optional<User> obj = repo.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 		
 	}
 
